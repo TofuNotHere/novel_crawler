@@ -9,15 +9,13 @@ htmldoc = request.urlopen(novel_url)
 
 soup = BeautifulSoup(htmldoc.read().decode('gbk'),"html.parser")
 print('《' + soup.h1.string +'》')
+print(soup.find('div',id='info').p.string.replace(u'\xa0', u''))
 novel_file = open(soup.h1.string+'.txt','a')
 dd_list = soup.find_all('dd')
 name_link_list = list(map(lambda var:(var.a.get_text(),var.a['href']),dd_list))
 print('本书共有',len(name_link_list),'章')
 cnt = 0
 for var in name_link_list:
-    if cnt < 658:
-        cnt+=1
-        continue
     print('\r当前已下载' + str(cnt) + '章',end='')
     novel_text_url = novel_url +'/'+ var[1]
     try:
